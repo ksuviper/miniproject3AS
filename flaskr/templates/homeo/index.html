@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h3>{% block title %}Available Remedies{% endblock %}</h3>
+  {% if g.user %}
+    <a class="action" href="{{ url_for('homeo.create') }}">New</a>
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {% for remedy in remedies %}
+    <article class="remedy">
+      <header>
+        <div>
+          <h1>{{ remedy['Name'] }}</h1>
+          <div class="about">by {{ remedy['username'] }} on {{ remedy['created'].strftime('%Y-%m-%d') }}</div>
+        </div>
+        {% if g.user['id'] == remedy['user_id'] %}
+          <a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a>
+        {% endif %}
+      </header>
+      <p class="body">{{ remedy['body'] }}</p>
+    </article>
+    {% if not loop.last %}
+      <hr>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
