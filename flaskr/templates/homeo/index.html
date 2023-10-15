@@ -3,26 +3,31 @@
 {% block header %}
   <h3>{% block title %}Available Remedies{% endblock %}</h3>
   {% if g.user %}
-    <a class="action" href="{{ url_for('homeo.create') }}">New</a>
+    <a class="action" href="{{ url_for('homeo.create') }}">Add New</a>
   {% endif %}
 {% endblock %}
 
 {% block content %}
-  {% for remedy in remedies %}
-    <article class="remedy">
-      <header>
-        <div>
-          <h1>{{ remedy['Name'] }}</h1>
-          <div class="about">by {{ remedy['username'] }} on {{ remedy['created'].strftime('%Y-%m-%d') }}</div>
-        </div>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+          <th scope="col">Remedy</th>
+          <th scope="col">Potency</th>
+          <th scope="col">Material Media Link</th>
+          <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for remedy in remedies %}
+      <tr>
+        <td>{{ remedy['Name'] }}</td>
+        <td>{{ remedy['Potency'] }}</td>
+        <td><a href="{{ remedy['materia_media_link'] }}" target="_blank"></a>{{ remedy['materia_media_link'] }}</td>
         {% if g.user['id'] == remedy['user_id'] %}
-          <a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a>
+        <td><a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a></td>
         {% endif %}
-      </header>
-      <p class="body">{{ remedy['body'] }}</p>
-    </article>
-    {% if not loop.last %}
-      <hr>
-    {% endif %}
+      </tr>
   {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

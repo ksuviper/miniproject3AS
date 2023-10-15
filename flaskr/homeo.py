@@ -13,7 +13,7 @@ bp = Blueprint('homeo', __name__)
 def index():
     db = get_db()
     remedies = db.execute(
-        'SELECT r.id, r.name, potency, created, updated, user_id, username'
+        'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
         ' FROM remedy r '
         ' JOIN user u ON r.user_id = u.id'
         ' JOIN remedy_potency p ON r.potency_id = p.id'
@@ -28,6 +28,7 @@ def create():
     if request.method == 'POST':
         name = request.form['name']
         potency_id = request.form['potency']
+        mlink = request.form['materia_medica_link']
         error = None
 
         if not name:
@@ -38,19 +39,21 @@ def create():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO remedy (name, potency_id, user_id)'
-                ' VALUES (?, ?, ?)',
-                (name, potency_id, g.user['id'])
+                'INSERT INTO remedy (name, potency_id, user_id, materia_medica_link)'
+                ' VALUES (?, ?, ?, ?)',
+                (name, potency_id, g.user['id'], mlink)
             )
             db.commit()
             return redirect(url_for('homeo.index'))
 
-    return render_template('homeo/create.html')
+    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
+
+    return render_template('homeo/create.html', potency_list=potency_list)
 
 
 def get_remedy(id, check_user=True):
     remedy = get_db().execute(
-        'SELECT r.id, r.name, potency, created, updated, user_id, username'
+        'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
         ' FROM remedy r '
         ' JOIN user u ON r.user_id = u.id'
         ' JOIN remedy_potency p ON r.potency_id = p.id'
@@ -73,21 +76,22 @@ def update(id):
     remedy = get_remedy(id)
 
     if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
+        name = request.form['name']
+        potency_id = request.form['potency_id']
+        mlink = request.form['materia_medica_link']
         error = None
 
-        if not title:
-            error = 'Title is required.'
+        if not name:
+            error = 'Name is required.'
 
         if error is not None:
             flash(error)
         else:
             db = get_db()
             db.execute(
-                'UPDATE rememdy SET title = ?, body = ?'
+                'UPDATE rememdy SET name = ?, potency_id = ?, materia_medica_link = ?'
                 ' WHERE id = ?',
-                (title, body, id)
+                (name, potency_id, mlink, id)
             )
             db.commit()
             return redirect(url_for('homeo.index'))
