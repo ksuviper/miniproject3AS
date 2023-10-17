@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
+  <h1>{% block title %}Edit "{{ remedy['name'] }}"{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   <form method="post">
-    <label for="title">Title</label>
-    <input name="title" id="title"
-      value="{{ request.form['title'] or post['title'] }}" required>
-    <label for="body">Body</label>
-    <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
+    <label for="name">Remedy Name</label>
+    <input name="name" id="name" value="{{ request.form['name'] or remedy['name'] }}" required>
+    <label>Potency</label>
+    <select name="potency">
+      {% for p in potency_list %}
+        <option {% if p.id == sel_potency_id %}selected{% endif %} value="{{ p.id }}">{{ p.potency }}</option>
+      {% endfor %}
+    </select>
+    <label for="materia_medica_link">Materia Medica Link</label>
+    <input name="materia_medica_link" id="materia_medica_link" value="{{ request.form['materia_medica_link'] or remedy['materia_medica_link'] }}">
     <input type="submit" value="Save">
   </form>
-  <hr>
-  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+  <form action="{{ url_for('homeo.delete', id=remedy['id']) }}" method="post">
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>
 {% endblock %}

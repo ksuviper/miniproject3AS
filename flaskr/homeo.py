@@ -74,6 +74,7 @@ def get_remedy(id, check_user=True):
 @login_required
 def update(id):
     remedy = get_remedy(id)
+    potency_id = remedy['potency_id']
 
     if request.method == 'POST':
         name = request.form['name']
@@ -96,7 +97,9 @@ def update(id):
             db.commit()
             return redirect(url_for('homeo.index'))
 
-    return render_template('homeo/update.html', remedy=remedy)
+    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
+
+    return render_template('homeo/update.html', remedy=remedy, potency_list=potency_list, sel_potency_id=potency_id)
 
 
 @bp.route('/<int:id>/delete', methods=('POST',))
