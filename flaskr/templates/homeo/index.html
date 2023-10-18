@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block content %}
-  <table class="table">
+  <table class="table table-striped">
     <thead class="thead-dark">
       <tr>
           <th scope="col">Remedy</th>
@@ -22,7 +22,7 @@
       <tr>
         <td>{{ remedy['Name'] }}</td>
         <td>{{ remedy['Potency'] }}</td>
-        <td><a href="{{ remedy['materia_media_link'] }}" target="_blank"></a>{{ remedy['materia_media_link'] }}</td>
+        <td><a href="{{ remedy['materia_medica_link'] }}" target="_blank">{{ remedy['materia_medica_link'] }}</a></td>
         {% if g.user['id'] == remedy['user_id'] %}
         <td><a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a></td>
         {% endif %}

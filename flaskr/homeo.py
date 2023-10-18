@@ -53,7 +53,7 @@ def create():
 
 def get_remedy(id, check_user=True):
     remedy = get_db().execute(
-        'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
+        'SELECT r.id, r.name, r.potency_id, potency, created, updated, user_id, username, materia_medica_link'
         ' FROM remedy r '
         ' JOIN user u ON r.user_id = u.id'
         ' JOIN remedy_potency p ON r.potency_id = p.id'
@@ -78,7 +78,7 @@ def update(id):
 
     if request.method == 'POST':
         name = request.form['name']
-        potency_id = request.form['potency_id']
+        potency_id = request.form['potency']
         mlink = request.form['materia_medica_link']
         error = None
 
@@ -90,7 +90,7 @@ def update(id):
         else:
             db = get_db()
             db.execute(
-                'UPDATE rememdy SET name = ?, potency_id = ?, materia_medica_link = ?'
+                'UPDATE remedy SET name = ?, potency_id = ?, materia_medica_link = ?'
                 ' WHERE id = ?',
                 (name, potency_id, mlink, id)
             )
@@ -98,6 +98,8 @@ def update(id):
             return redirect(url_for('homeo.index'))
 
     potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
+    print(potency_id)
+    print(potency_list)
 
     return render_template('homeo/update.html', remedy=remedy, potency_list=potency_list, sel_potency_id=potency_id)
 
