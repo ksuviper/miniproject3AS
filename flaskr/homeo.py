@@ -98,8 +98,6 @@ def update(id):
             return redirect(url_for('homeo.index'))
 
     potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
-    print(potency_id)
-    print(potency_list)
 
     return render_template('homeo/update.html', remedy=remedy, potency_list=potency_list, sel_potency_id=potency_id)
 
