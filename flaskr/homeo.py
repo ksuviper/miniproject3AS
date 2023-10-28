@@ -112,3 +112,39 @@ def delete(id):
     return redirect(url_for('homeo.index'))
 
 
+@bp.route('/list_p')
+def list_p():
+    db = get_db()
+    potencies = db.execute(
+        'SELECT id, potency'
+        ' FROM remedy_potency p '        
+        ' ORDER BY potency DESC'
+    ).fetchall()
+
+    return render_template('homeo/list_p.html', potencies=potencies)
+
+
+@bp.route('/add_p')
+@login_required
+def add_p():
+    db = get_db()
+    potency = db.execute(
+        'SELECT id, potency'
+        ' FROM remedy_potency p '        
+        ' ORDER BY potency DESC'
+    ).fetchall()
+
+    return render_template('homeo/list_p.html')
+
+
+@bp.route('/update_p')
+@login_required
+def update_p():
+    db = get_db()
+    potency = db.execute(
+        'SELECT id, potency'
+        ' FROM remedy_potency p '        
+        ' ORDER BY potency DESC'
+    ).fetchall()
+
+    return render_template('homeo/list_p.html')
