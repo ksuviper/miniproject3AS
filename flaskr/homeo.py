@@ -17,7 +17,7 @@ def index():
         ' FROM remedy r '
         ' JOIN user u ON r.user_id = u.id'
         ' JOIN remedy_potency p ON r.potency_id = p.id'
-        ' ORDER BY created DESC'
+        ' ORDER BY r.name, potency'
     ).fetchall()
     return render_template('homeo/index.html', remedies=remedies)
 
@@ -46,7 +46,7 @@ def create():
             db.commit()
             return redirect(url_for('homeo.index'))
 
-    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
+    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency order by potency').fetchall()
 
     return render_template('homeo/create.html', potency_list=potency_list)
 
@@ -63,9 +63,6 @@ def get_remedy(id, check_user=True):
 
     if remedy is None:
         abort(404, f"Remedy id {id} doesn't exist.")
-
-    if check_user and remedy['user_id'] != g.user['id']:
-        abort(403)
 
     return remedy
 
@@ -97,7 +94,7 @@ def update(id):
             db.commit()
             return redirect(url_for('homeo.index'))
 
-    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency').fetchall()
+    potency_list = get_db().execute('SELECT id, potency FROM remedy_potency order by potency').fetchall()
 
     return render_template('homeo/update.html', remedy=remedy, potency_list=potency_list, sel_potency_id=potency_id)
 
@@ -111,40 +108,3 @@ def delete(id):
     db.commit()
     return redirect(url_for('homeo.index'))
 
-
-@bp.route('/list_p')
-def list_p():
-    db = get_db()
-    potencies = db.execute(
-        'SELECT id, potency'
-        ' FROM remedy_potency p '        
-        ' ORDER BY potency DESC'
-    ).fetchall()
-
-    return render_template('homeo/list_p.html', potencies=potencies)
-
-
-@bp.route('/add_p')
-@login_required
-def add_p():
-    db = get_db()
-    potency = db.execute(
-        'SELECT id, potency'
-        ' FROM remedy_potency p '        
-        ' ORDER BY potency DESC'
-    ).fetchall()
-
-    return render_template('homeo/list_p.html')
-
-
-@bp.route('/update_p')
-@login_required
-def update_p():
-    db = get_db()
-    potency = db.execute(
-        'SELECT id, potency'
-        ' FROM remedy_potency p '        
-        ' ORDER BY potency DESC'
-    ).fetchall()
-
-    return render_template('homeo/list_p.html')
