@@ -25,6 +25,9 @@ CREATE TABLE remedy_potency (
   potency TEXT NOT NULL UNIQUE
 );
 
+INSERT INTO remedy_potency (potency) VALUES ('6X');
+INSERT INTO remedy_potency (potency) VALUES ('12X');
+INSERT INTO remedy_potency (potency) VALUES ('30X');
 INSERT INTO remedy_potency (potency) VALUES ('3C');
 INSERT INTO remedy_potency (potency) VALUES ('6C');
 INSERT INTO remedy_potency (potency) VALUES ('12C');

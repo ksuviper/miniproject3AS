@@ -18,6 +18,9 @@
     <input name="materia_medica_link" id="materia_medica_link" value="{{ request.form['materia_medica_link'] or remedy['materia_medica_link'] }}">
     <input type="submit" value="Save">
   </form>
+  <form action="/">
+    <input type="submit" value="Cancel">
+  </form>
   <form action="{{ url_for('homeo.delete', id=remedy['id']) }}" method="post">
     <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
   </form>

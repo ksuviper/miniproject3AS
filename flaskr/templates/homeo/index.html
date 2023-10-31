@@ -12,7 +12,6 @@
     <thead class="thead-dark">
       <tr>
           <th scope="col">Remedy</th>
-          <th scope="col">Potency</th>
           <th scope="col">Material Media Link</th>
           <th scope="col"></th>
         </tr>
@@ -20,14 +19,13 @@
     <tbody>
     {% for remedy in remedies %}
       <tr>
-        <td>{{ remedy['Name'] }}</td>
-        <td>{{ remedy['Potency'] }}</td>
+        <td>{{ remedy['Name'] }} {{ remedy['Potency'] }}</td>
         <td><a href="{{ remedy['materia_medica_link'] }}" target="_blank">{{ remedy['materia_medica_link'] }}</a></td>
-        {% if g.user['id'] == remedy['user_id'] %}
+        {% if g.user %}
         <td><a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a></td>
         {% endif %}
       </tr>
-  {% endfor %}
+    {% endfor %}
     </tbody>
   </table>
 {% endblock %}
