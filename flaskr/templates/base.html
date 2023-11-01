@@ -9,23 +9,14 @@
 
 <body>
     <nav class="p-3 text-bg-dark">
-      <h1>Homeopathic Remedy Catalog</h1>
+      <h1><a class="navbar-brand" href="/">Homeopathic Remedy Catalog</a></h1>
       <ul>
         {% if g.user %}
             <li><span>Welcome, {{ g.user['displayname'] }}</span></li>
-            <li><form action="{{ url_for('auth.logout') }}">
-                <button type="submit" class="btn btn-outline-light me-2" value="Logout">Log Out</button>
-                </form>
-            </li>
+            <li><a href="{{ url_for('auth.logout') }}" class="btn btn-outline-light me-2" role="button">Log Out</a></li>
         {% else %}
-            <li><form action="{{ url_for('auth.register') }}">
-                <button type="submit" class="btn btn-outline-light me-2" value="Register">Register</button>
-                </form>
-            </li>
-            <li><form action="{{ url_for('auth.login') }}">
-                <button type="submit" class="btn btn-outline-light me-2" value="Login">Log In</button>
-                </form>
-            </li>
+            <li><a href="{{ url_for('auth.register') }}" class="btn btn-outline-light me-2" role="button">Register</a></li>
+            <li><a href="{{ url_for('auth.login') }}" class="btn btn-outline-light me-2" role="button">Log In</a></li>
 
         {% endif %}
       <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#aboutModal">About</button>

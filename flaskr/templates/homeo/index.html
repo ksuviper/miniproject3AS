@@ -1,16 +1,19 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h3>{% block title %}Available Remedies{% endblock %}</h3>
+<h2>{% block title %}Available Remedies{% endblock %}</h2>
+    <form class="d-flex" role="search" method="post">
+      <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="query">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
   {% if g.user %}
-    <a class="action" href="{{ url_for('homeo.create') }}">Add New</a>
+  <a href="{{ url_for('homeo.create') }}" class="btn btn-info" role="button">Add New</a>
   {% endif %}
 {% endblock %}
-
 {% block content %}
   <table class="table table-striped">
     <thead class="thead-dark">
-      <tr>
+      <tr scope="row">
           <th scope="col">Remedy</th>
           <th scope="col">Material Media Link</th>
           <th scope="col"></th>
@@ -18,11 +21,11 @@
     </thead>
     <tbody>
     {% for remedy in remedies %}
-      <tr>
+      <tr scope="row">
         <td>{{ remedy['Name'] }} {{ remedy['Potency'] }}</td>
         <td><a href="{{ remedy['materia_medica_link'] }}" target="_blank">{{ remedy['materia_medica_link'] }}</a></td>
         {% if g.user %}
-        <td><a class="action" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a></td>
+        <td><a class="btn btn-info" href="{{ url_for('homeo.update', id=remedy['id']) }}">Edit</a></td>
         {% endif %}
       </tr>
     {% endfor %}
