@@ -17,8 +17,17 @@ pip install -r requirements.txt
 ```
 ## Usage
 
-Use the following command in a terminal windows to start the web application:
+Use the following command in a terminal window to initialize the database:
+```
+flask --app flaskr init-db
+```
+
+Use the following command in a terminal window to start the web application:
 ```
 flask --app flaskr run
+
+or
+
+flask --app flaskr run --debug
 ```
 You will be able to view the web application by browsing to http://127.0.0.1:5000
