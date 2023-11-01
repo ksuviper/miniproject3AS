@@ -29,11 +29,15 @@ INSERT INTO remedy_potency (potency) VALUES ('6X');
 INSERT INTO remedy_potency (potency) VALUES ('12X');
 INSERT INTO remedy_potency (potency) VALUES ('30X');
 INSERT INTO remedy_potency (potency) VALUES ('3C');
+INSERT INTO remedy_potency (potency) VALUES ('4C');
 INSERT INTO remedy_potency (potency) VALUES ('6C');
+INSERT INTO remedy_potency (potency) VALUES ('7C');
+INSERT INTO remedy_potency (potency) VALUES ('9C');
 INSERT INTO remedy_potency (potency) VALUES ('12C');
 INSERT INTO remedy_potency (potency) VALUES ('30C');
 INSERT INTO remedy_potency (potency) VALUES ('200C');
 INSERT INTO remedy_potency (potency) VALUES ('1M');
 INSERT INTO remedy_potency (potency) VALUES ('10M');
 INSERT INTO remedy_potency (potency) VALUES ('50M');
+INSERT INTO remedy_potency (potency) VALUES ('LM');
 
