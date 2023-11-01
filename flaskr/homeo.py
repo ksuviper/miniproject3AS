@@ -9,19 +9,35 @@ from flaskr.db import get_db
 bp = Blueprint('homeo', __name__)
 
 
-@bp.route('/')
+# default route and search route
+@bp.route('/', methods=['GET','POST'])
 def index():
     db = get_db()
-    remedies = db.execute(
-        'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
-        ' FROM remedy r '
-        ' JOIN user u ON r.user_id = u.id'
-        ' JOIN remedy_potency p ON r.potency_id = p.id'
-        ' ORDER BY r.name, potency'
-    ).fetchall()
+
+    # check to see if the search button as clicked
+    if request.method == 'POST':
+        q = request.form['query']
+        remedies = db.execute(
+            'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
+            ' FROM remedy r '
+            ' JOIN user u ON r.user_id = u.id'
+            ' JOIN remedy_potency p ON r.potency_id = p.id'
+            ' WHERE r.name like ?'
+            ' ORDER BY r.name, potency', (q+'%',)
+        ).fetchall()
+    else:
+        remedies = db.execute(
+            'SELECT r.id, r.name, potency, created, updated, user_id, username, materia_medica_link'
+            ' FROM remedy r '
+            ' JOIN user u ON r.user_id = u.id'
+            ' JOIN remedy_potency p ON r.potency_id = p.id'
+            ' ORDER BY r.name, potency'
+        ).fetchall()
+
     return render_template('homeo/index.html', remedies=remedies)
 
 
+# route for adding a new remedy
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
@@ -67,12 +83,14 @@ def get_remedy(id, check_user=True):
     return remedy
 
 
+# route for updating remedy
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
     remedy = get_remedy(id)
     potency_id = remedy['potency_id']
 
+    # check to see if save button was pushed
     if request.method == 'POST':
         name = request.form['name']
         potency_id = request.form['potency']
@@ -99,6 +117,7 @@ def update(id):
     return render_template('homeo/update.html', remedy=remedy, potency_list=potency_list, sel_potency_id=potency_id)
 
 
+# route to delete remedy
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
